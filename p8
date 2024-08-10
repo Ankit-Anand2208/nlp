@@ -4,7 +4,6 @@ from keras.layers import LSTM, Dense, Dropout
 from keras.callbacks import LambdaCallback
 import random
 import sys
-# Load and preprocess the text data
 with open('text_corpus.txt', 'r', encoding='utf-8') as f:
     text = f.read().lower()
 chars = sorted(list(set(text)))
@@ -23,13 +22,10 @@ for i, sentence in enumerate(sentences):
     for t, char in enumerate(sentence):
         x[i, t, char_indices[char]] = 1
         y[i, char_indices[next_chars[i]]] = 1
-# Define the LSTM model
 model = Sequential()
 model.add(LSTM(128, input_shape=(max_len, len(chars))))
 model.add(Dense(len(chars), activation='softmax'))
-# Compile the model
 model.compile(loss='categorical_crossentropy', optimizer='adam')
-# Function to sample the next character
 def sample(preds, temperature=1.0):
     preds = np.asarray(preds).astype('float64')
     preds = np.log(preds) / temperature
@@ -37,7 +33,6 @@ def sample(preds, temperature=1.0):
     preds = exp_preds / np.sum(exp_preds)
     probas = np.random.multinomial(1, preds, 1)
     return np.argmax(probas)
-# Function to generate text
 def generate_text(seed_text, temperature=0.5, generated_text_length=400):
     generated_text = seed_text.lower()
     for i in range(generated_text_length):
@@ -50,7 +45,6 @@ def generate_text(seed_text, temperature=0.5, generated_text_length=400):
         generated_text += next_char
         seed_text = seed_text[1:] + next_char
     return generated_text
-# Train the model and generate text
 def on_epoch_end(epoch, _):
     print()
     print('----- Generating text after Epoch: %d' % epoch)
@@ -61,5 +55,4 @@ def on_epoch_end(epoch, _):
         print('----- Temperature:', temperature)
         print(seed_text + generated_text)
 print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
-# Fit the model
 model.fit(x, y,batch_size=128,epochs=30,callbacks=[print_callback])
