@@ -2,11 +2,8 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.tag import pos_tag
 from nltk.corpus import stopwords
-# Sample text
 text = "John likes to play football with his friends."
-# Tokenize the text
 tokens = word_tokenize(text)
-# Rule-based PoS tagging
 def rule_based_pos_tagging(tokens):
     tagged_tokens = []
     for token in tokens:
@@ -21,17 +18,13 @@ def rule_based_pos_tagging(tokens):
         else:
             tagged_tokens.append((token, 'NN')) # Default to noun
     return tagged_tokens
-# Statistical PoS tagging
 def statistical_pos_tagging(tokens):
     tagged_tokens = pos_tag(tokens)
     return tagged_tokens
-# Remove stopwords for better accuracy in statistical PoS tagging
 stop_words = set(stopwords.words('english'))
 tokens_without_stopwords = [token for token in tokens if token.lower() not in stop_words]
-# Perform PoS tagging
 rule_based_tags = rule_based_pos_tagging(tokens)
 statistical_tags = statistical_pos_tagging(tokens_without_stopwords)
-# Display the results
 print("Rule-based PoS tagging:")
 print(rule_based_tags)
 print("\nStatistical PoS tagging:")
