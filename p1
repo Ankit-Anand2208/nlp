@@ -1,0 +1,24 @@
+import nltk
+from nltk import word_tokenize
+from nltk import WordNetLemmatizer, PorterStemmer
+from nltk.corpus import stopwords
+import string
+def preprocess_text(text):
+    tokens = word_tokenize(text.lower())
+    tokens = [token for token in tokens if token not in string.punctuation]
+    stop_words = set(stopwords.words('english'))
+    tokens = [token for token in tokens if token not in stop_words]
+    return tokens
+def lemmatize(tokens):
+    lemmatizer = WordNetLemmatizer()
+    return [lemmatizer.lemmatize(token) for token in tokens]
+def stem(tokens):
+    stemmer = PorterStemmer()
+    return [stemmer.stem(token) for token in tokens]
+def main():
+    text = "Tokenization is the process of breaking down text into words and phrases. Stemming and Lemmatization are techniques used to reduce words to their base form."
+    tokens = preprocess_text(text)
+    print("Lemmatization:", lemmatize(tokens))
+    print("Stemming:", stem(tokens))
+if __name__ == "__main__":
+    main()
